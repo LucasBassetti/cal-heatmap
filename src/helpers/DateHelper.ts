@@ -206,8 +206,8 @@ export default class DateHelper {
     start = start.startOf(interval as ManipulateType);
 
     end = end.startOf(interval as ManipulateType);
-    let pivot = dayjs.min(start, end);
-    end = dayjs.max(start, end);
+    let pivot = dayjs.min(start, end) as dayjs.Dayjs;
+    end = dayjs.max(start, end) as dayjs.Dayjs;
     const result: Timestamp[] = [];
 
     if (!excludeEnd) {
