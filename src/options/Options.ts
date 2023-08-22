@@ -4,7 +4,7 @@ import has from 'lodash-es/has';
 import get from 'lodash-es/get';
 import set from 'lodash-es/set';
 import type { Ls } from 'dayjs';
-import type { DomainType, Timestamp } from '../index';
+import type { DomainType, Timestamp } from '../types';
 import {
   OPTIONS_DEFAULT_DOMAIN_TYPE,
   OPTIONS_DEFAULT_SUBDOMAIN_TYPE,
@@ -39,9 +39,9 @@ export type DomainOptions = {
 
 type LabelOptions = {
   text?:
-  | string
-  | null
-  | ((timestamp: Timestamp, element: SVGElement) => string);
+    | string
+    | null
+    | ((timestamp: Timestamp, element: SVGElement) => string);
   position: 'top' | 'right' | 'bottom' | 'left';
   textAlign: TextAlign;
   offset: {
@@ -60,16 +60,16 @@ export type SubDomainOptions = {
   gutter: number;
   radius: number;
   label:
-  | string
-  | null
-  | ((timestamp: Timestamp, value: number, element: SVGElement) => string);
+    | string
+    | null
+    | ((timestamp: Timestamp, value: number, element: SVGElement) => string);
   color?:
-  | string
-  | ((
-    timestamp: Timestamp,
-    value: number | string | null | undefined,
-    backgroundColor: string,
-  ) => string);
+    | string
+    | ((
+        timestamp: Timestamp,
+        value: number | string | null | undefined,
+        backgroundColor: string,
+      ) => string);
   sort: SortOrder;
 };
 
@@ -92,8 +92,8 @@ export type DataOptions = {
   x: string | ((datum: DataRecord) => number);
   y: string | ((datum: DataRecord) => number);
   groupY:
-  | DataGroupType
-  | ((values: (string | number | null)[]) => string | number | null);
+    | DataGroupType
+    | ((values: (string | number | null)[]) => string | number | null);
   defaultValue: null | number | string;
 };
 
@@ -307,9 +307,9 @@ export default class Options {
     set(
       this.options,
       key,
-      has(this.preProcessors, key) ?
-        get(this.preProcessors, key)(value) :
-        value,
+      has(this.preProcessors, key)
+        ? get(this.preProcessors, key)(value)
+        : value,
     );
 
     return true;

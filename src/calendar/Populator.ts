@@ -3,7 +3,7 @@ import { hcl } from 'd3-color';
 import { normalizedScale, applyScaleStyle } from '../scale';
 
 import type CalHeatmap from '../CalHeatmap';
-import type { SubDomain, Timestamp } from '../index';
+import type { SubDomain, Timestamp } from '../types';
 
 export default class Populator {
   calendar: CalHeatmap;
@@ -45,7 +45,8 @@ export default class Populator {
           })
           .text((d: SubDomain, i: number, nodes: any[]) =>
             // eslint-disable-next-line implicit-arrow-linebreak
-            calendar.dateHelper.format(d.t, subDomain.label, d.v, nodes[i]));
+            calendar.dateHelper.format(d.t, subDomain.label, d.v, nodes[i]),
+          );
       })
       .call(() => {
         calendar.eventEmitter.emit('fill');

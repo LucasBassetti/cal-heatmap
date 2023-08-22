@@ -5,7 +5,7 @@ import SubDomainPainter from '../subDomain/SubDomainPainter';
 import { ScrollDirection } from '../constant';
 
 import type CalHeatmap from '../CalHeatmap';
-import type { Dimensions } from '../index';
+import type { Dimensions } from '../types';
 
 const BASE_SELECTOR = '.ch-domain-container';
 const TRANSITION_CLASSNAME = 'in-transition';
@@ -74,7 +74,7 @@ class DomainsContainerPainter {
     const leftWidth = this.calendar.pluginManager.getWidthFromPosition('left');
 
     return [
-      select(this.root.node().parentNode)
+      (select(this.root.node().parentNode) as any)
         .transition()
         .duration(animationDuration)
         .call((selection: any) => {

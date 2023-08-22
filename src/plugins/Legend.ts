@@ -2,7 +2,7 @@ import { select } from 'd3-selection';
 import { legend } from '@observablehq/plot';
 
 import type CalHeatmap from '../CalHeatmap';
-import type { IPlugin, PluginOptions } from '../index';
+import type { IPlugin, PluginOptions } from '../types';
 
 interface LegendOptions extends PluginOptions {
   enabled: boolean;

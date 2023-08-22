@@ -1,6 +1,6 @@
 {
-  "name": "cal-heatmap",
-  "version": "4.2.3",
+  "name": "s3-cal-heatmap",
+  "version": "4.2.6",
   "description": "Cal-Heatmap is a javascript module to create calendar heatmap to visualize time series data",
   "keywords": [
     "calendar",
@@ -9,42 +9,20 @@
     "heat map"
   ],
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/cal-heatmap.esm.js",
-      "require": "./dist/cal-heatmap.js"
-    },
-    "./package.json": "./package.json",
-    "./cal-heatmap.css": "./dist/cal-heatmap.css",
-    "./plugins/Tooltip": {
-      "import": "./dist/plugins/Tooltip.esm.js",
-      "require": "./dist/plugins/Tooltip.js"
-    },
-    "./plugins/Legend": {
-      "import": "./dist/plugins/Legend.esm.js",
-      "require": "./dist/plugins/Legend.js"
-    },
-    "./plugins/LegendLite": {
-      "import": "./dist/plugins/LegendLite.esm.js",
-      "require": "./dist/plugins/LegendLite.js"
-    },
-    "./plugins/CalendarLabel": {
-      "import": "./dist/plugins/CalendarLabel.esm.js",
-      "require": "./dist/plugins/CalendarLabel.js"
-    }
-  },
   "directories": {
     "test": "test"
   },
-  "types": "./src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/types.d.ts",
   "node": ">=14.16",
   "browserslist": "last 2 versions, not dead, > 0.2%",
   "dependencies": {
-    "@observablehq/plot": "^0.6.0",
+    "@observablehq/plot": "^0.6.10",
     "@popperjs/core": "^2.11.6",
     "d3-color": "^3.1.0",
     "d3-fetch": "^3.0.1",
     "d3-selection": "^3.0.0",
+    "d3-time": "^3.1.0",
     "d3-transition": "^3.0.1",
     "dayjs": "^1.11.7",
     "eventemitter3": "^5.0.0",
@@ -62,6 +40,7 @@
     "@types/d3-color": "^3.1.0",
     "@types/d3-fetch": "^3.0.1",
     "@types/d3-selection": "^3.0.3",
+    "@types/d3-time": "^3.0.0",
     "@types/d3-transition": "^3.0.2",
     "@types/jest": "^29.2.4",
     "@types/lodash-es": "^4.17.6",
@@ -96,7 +75,9 @@
   "scripts": {
     "format": "npx prettier-eslint --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "npx eslint src/ test/",
+    "sass": "sass src/cal-heatmap.scss dist/styles.css",
     "build": "rm -rf dist/* && rollup -c",
+    "build:tsc": "rm -rf ./dist && tsc -b ./tsconfig.json && npm run sass && cp src/index.js dist/index.js && cp src/types.d.ts dist/types.d.ts",
     "dev": "rollup --config -w",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest test/",
     "test:e2e": "node --experimental-vm-modules ./node_modules/.bin/jest -c jest-e2e.config.mjs test/",
@@ -106,7 +87,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wa0x6e/cal-heatmap.git"
+    "url": "https://github.com/LucasBassetti/cal-heatmap.git"
   },
   "homepage": "https://cal-heatmap.com",
   "author": {
@@ -114,13 +95,11 @@
     "url": "http://www.kamisama.me"
   },
   "license": "MIT",
-  "bugs": "https://github.com/wa0x6e/cal-heatmap/issues",
+  "bugs": "https://github.com/LucasBassetti/cal-heatmap/issues",
   "categories": [
-    "Data",
     "Visualization"
   ],
   "files": [
-    "src",
     "dist"
   ],
   "config": {

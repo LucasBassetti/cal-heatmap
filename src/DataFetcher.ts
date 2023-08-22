@@ -1,9 +1,7 @@
-import {
-  json, csv, dsv, text,
-} from 'd3-fetch';
+import { json, csv, dsv, text } from 'd3-fetch';
 
 import type { DataOptions, DataRecord } from './options/Options';
-import type { Timestamp } from './index';
+import type { Timestamp } from './types';
 import type CalHeatmap from './CalHeatmap';
 
 export default class DataFetcher {
@@ -48,10 +46,12 @@ export default class DataFetcher {
   ): string {
     let newUri = str.replace(/\{\{start=(.*)\}\}/g, (_, format) =>
       // eslint-disable-next-line implicit-arrow-linebreak
-      this.calendar.dateHelper.date(startTimestamp).format(format));
+      this.calendar.dateHelper.date(startTimestamp).format(format),
+    );
     newUri = newUri.replace(/\{\{end=(.*)\}\}/g, (_, format) =>
       // eslint-disable-next-line implicit-arrow-linebreak
-      this.calendar.dateHelper.date(endTimestamp).format(format));
+      this.calendar.dateHelper.date(endTimestamp).format(format),
+    );
 
     return newUri;
   }

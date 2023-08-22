@@ -1,7 +1,7 @@
 import TemplateCollection from '../src/TemplateCollection';
 import DateHelper from '../src/helpers/DateHelper';
 import Options from '../src/options/Options';
-import type { TemplateResult } from '../src/index';
+import type { TemplateResult } from '../src/types';
 
 describe('TemplateCollection', () => {
   let t: TemplateCollection;
@@ -82,12 +82,13 @@ describe('TemplateCollection', () => {
     t.init();
 
     t.add(
-      () => ({
-        name,
-        parent: 'year',
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        columnsCount: (_ts: number) => 50,
-      } as TemplateResult),
+      () =>
+        ({
+          name,
+          parent: 'year',
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          columnsCount: (_ts: number) => 50,
+        } as TemplateResult),
     );
     expect(t.get(name).rowsCount(0)).toBe(t.get('year').rowsCount(0));
     expect(t.get(name).columnsCount(0)).toBe(50);
@@ -97,19 +98,21 @@ describe('TemplateCollection', () => {
 
   it('can init templates with custom template as parent', () => {
     t.add([
-      () => ({
-        name: 'children',
-        parent: 'parent',
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        columnsCount: (_ts: number) => 10,
-      } as TemplateResult),
-      () => ({
-        name: 'parent',
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        columnsCount: (_ts: number) => 50,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        rowsCount: (_ts: number) => 11,
-      } as TemplateResult),
+      () =>
+        ({
+          name: 'children',
+          parent: 'parent',
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          columnsCount: (_ts: number) => 10,
+        } as TemplateResult),
+      () =>
+        ({
+          name: 'parent',
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          columnsCount: (_ts: number) => 50,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          rowsCount: (_ts: number) => 11,
+        } as TemplateResult),
     ]);
 
     expect(t.get('children').columnsCount(0)).toBe(10);

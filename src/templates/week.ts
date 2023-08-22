@@ -1,5 +1,5 @@
 import type { DomainOptions } from '../options/Options';
-import type { Template, DomainType } from '../index';
+import type { Template, DomainType } from '../types';
 
 const weekTemplate: Template = (
   DateHelper,
@@ -14,13 +14,13 @@ const weekTemplate: Template = (
     columnsCount: (ts) => {
       switch (domain.type) {
         case 'year':
-          return domain.dynamicDimension ?
-            DateHelper.date(ts).endOf('year').isoWeeksInYear() :
-            53;
+          return domain.dynamicDimension
+            ? DateHelper.date(ts).endOf('year').isoWeeksInYear()
+            : 53;
         case 'month':
-          return domain.dynamicDimension ?
-            DateHelper.getWeeksCountInMonth(ts) :
-            5;
+          return domain.dynamicDimension
+            ? DateHelper.getWeeksCountInMonth(ts)
+            : 5;
         default:
           return 1;
       }

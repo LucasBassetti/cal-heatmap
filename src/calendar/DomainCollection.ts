@@ -1,12 +1,12 @@
 import castArray from 'lodash-es/castArray';
 
-import type { SubDomain } from '../index';
+import type { SubDomain } from '../types';
 import type {
   DataOptions,
   DataGroupType,
   DataRecord,
 } from '../options/Options';
-import { DomainType, Timestamp } from '../index';
+import { DomainType, Timestamp } from '../types';
 import type DateHelper from '../helpers/DateHelper';
 
 export const DOMAIN_FORMAT: Record<DomainType, string> = {
@@ -130,9 +130,9 @@ export default class DomainCollection {
 
   slice(limit: number = 0, fromBeginning: boolean = true): DomainCollection {
     if (this.keys.length > limit) {
-      const keysToDelete = fromBeginning ?
-        this.keys.slice(0, -limit) :
-        this.keys.slice(limit);
+      const keysToDelete = fromBeginning
+        ? this.keys.slice(0, -limit)
+        : this.keys.slice(limit);
 
       keysToDelete.forEach((key) => {
         this.collection.delete(key);
@@ -244,10 +244,10 @@ export default class DomainCollection {
           case 'max':
             return Math.max(...(cleanedValues as number[])) || null;
           case 'average':
-            return cleanedValues.length > 0 ?
-              (cleanedValues as number[]).reduce((a, b) => a + b, 0) /
-                  cleanedValues.length :
-              null;
+            return cleanedValues.length > 0
+              ? (cleanedValues as number[]).reduce((a, b) => a + b, 0) /
+                  cleanedValues.length
+              : null;
           default:
             return null;
         }

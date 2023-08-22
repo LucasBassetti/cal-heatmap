@@ -1,5 +1,5 @@
 import type { OptionsType, DomainOptions } from '../options/Options';
-import type { Template, DomainType } from '../index';
+import type { Template, DomainType } from '../types';
 
 const dayTemplate: Template = (
   DateHelper,
@@ -22,17 +22,17 @@ const dayTemplate: Template = (
       switch (domain.type) {
         case 'month':
           return Math.ceil(
-            domain.dynamicDimension && !verticalOrientation ?
-              DateHelper.getMonthWeekNumber(
-                DateHelper.date(ts).endOf('month'),
-              ) :
-              6, // In rare case, when the first week contains less than 3 days
+            domain.dynamicDimension && !verticalOrientation
+              ? DateHelper.getMonthWeekNumber(
+                  DateHelper.date(ts).endOf('month'),
+                )
+              : 6, // In rare case, when the first week contains less than 3 days
           );
         case 'year':
           return Math.ceil(
-            domain.dynamicDimension ?
-              DateHelper.date(ts).endOf('year').dayOfYear() / ROWS_COUNT :
-              54,
+            domain.dynamicDimension
+              ? DateHelper.date(ts).endOf('year').dayOfYear() / ROWS_COUNT
+              : 54,
           );
         case 'week':
         default:

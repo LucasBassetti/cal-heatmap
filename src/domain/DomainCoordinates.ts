@@ -4,7 +4,7 @@ import { horizontalPadding, verticalPadding } from '../helpers/PositionHelper';
 import type CalHeatmap from '../CalHeatmap';
 import type DomainPainter from './DomainPainter';
 import type DomainCollection from '../calendar/DomainCollection';
-import type { SubDomain, Dimensions, Timestamp } from '../index';
+import type { SubDomain, Dimensions, Timestamp } from '../types';
 
 type SubDomainWithCoordinates = Required<SubDomain> & {
   pre_x: number;
@@ -105,9 +105,7 @@ export default class DomainCoordinates {
    * Used to compute the x position of the domains on the x axis
    */
   #getWidth(d: Timestamp): number {
-    const {
-      domain, subDomain, x, verticalOrientation,
-    } =
+    const { domain, subDomain, x, verticalOrientation } =
       this.calendar.options.options;
     const columnsCount = this.calendar.templateCollection
       .get(subDomain.type)!
@@ -132,9 +130,7 @@ export default class DomainCoordinates {
    * Used to compute the y position of the domains on the y axis
    */
   #getHeight(d: Timestamp): number {
-    const {
-      domain, subDomain, x, verticalOrientation,
-    } =
+    const { domain, subDomain, x, verticalOrientation } =
       this.calendar.options.options;
     const rowsCount = this.calendar.templateCollection
       .get(subDomain.type)!

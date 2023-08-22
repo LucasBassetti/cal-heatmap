@@ -7,7 +7,7 @@ import {
 } from '../subDomain/SubDomainPainter';
 
 import type CalHeatmap from '../CalHeatmap';
-import type { IPlugin, PluginOptions } from '../index';
+import type { IPlugin, PluginOptions } from '../types';
 import {
   OPTIONS_DEFAULT_SUBDOMAIN_WIDTH,
   OPTIONS_DEFAULT_SUBDOMAIN_HEIGHT,
@@ -100,9 +100,7 @@ export default class LegendLite implements IPlugin {
   #buildLegend() {
     const node = create('svg');
     const scale = normalizedScale(this.calendar.options.options.scale);
-    const {
-      width, height, gutter, includeBlank,
-    } = this.options;
+    const { width, height, gutter, includeBlank } = this.options;
 
     const localRange = [...scale.range];
     if (includeBlank) {
@@ -121,21 +119,22 @@ export default class LegendLite implements IPlugin {
       .selectAll('rect')
       .data(localRange)
       .join(
-        (enter: any) => enter.append('rect').call((sc: any) =>
-        // eslint-disable-next-line implicit-arrow-linebreak
-          this.#nodeAttrs(sc, scale)),
-        (update: any) => update
-          .selectAll('rect')
-          .call((sc: any) => this.#nodeAttrs(sc, scale)),
+        (enter: any) =>
+          enter.append('rect').call((sc: any) =>
+            // eslint-disable-next-line implicit-arrow-linebreak
+            this.#nodeAttrs(sc, scale),
+          ),
+        (update: any) =>
+          update
+            .selectAll('rect')
+            .call((sc: any) => this.#nodeAttrs(sc, scale)),
       );
 
     return node;
   }
 
   #nodeAttrs(selection: any, scale: any) {
-    const {
-      width, height, radius, gutter,
-    } = this.options;
+    const { width, height, radius, gutter } = this.options;
 
     return selection
       .attr('width', width)

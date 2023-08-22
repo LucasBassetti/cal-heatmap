@@ -7,7 +7,7 @@ import {
 import { DOMAIN_FORMAT } from '../calendar/DomainCollection';
 
 import type CalHeatmap from '../CalHeatmap';
-import type { Timestamp } from '../index';
+import type { Timestamp } from '../types';
 
 const DEFAULT_SELECTOR = '.ch-domain-text';
 
@@ -37,17 +37,19 @@ export default class DomainLabelPainter {
         (d: Timestamp) => d,
       )
       .join(
-        (enter: any) => enter
-          .append('text')
-          .attr('class', DEFAULT_SELECTOR.slice(1))
-          .attr('x', (d: Timestamp) => this.#getX(d))
-          .attr('y', (d: Timestamp) => this.#getY(d))
-          .attr('text-anchor', label.textAlign)
-          .attr('dominant-baseline', () => this.#textVerticalAlign())
-          .text((d: Timestamp, i: number, nodes: any[]) =>
-          // eslint-disable-next-line implicit-arrow-linebreak
-            dateHelper.format(d, format!, nodes[i]))
-          .call((selection: any) => this.#domainRotate(selection)),
+        (enter: any) =>
+          enter
+            .append('text')
+            .attr('class', DEFAULT_SELECTOR.slice(1))
+            .attr('x', (d: Timestamp) => this.#getX(d))
+            .attr('y', (d: Timestamp) => this.#getY(d))
+            .attr('text-anchor', label.textAlign)
+            .attr('dominant-baseline', () => this.#textVerticalAlign())
+            .text((d: Timestamp, i: number, nodes: any[]) =>
+              // eslint-disable-next-line implicit-arrow-linebreak
+              dateHelper.format(d, format!, nodes[i]),
+            )
+            .call((selection: any) => this.#domainRotate(selection)),
         (update: any) => {
           update
             .attr('x', (d: Timestamp) => this.#getX(d))
@@ -56,7 +58,8 @@ export default class DomainLabelPainter {
             .attr('dominant-baseline', () => this.#textVerticalAlign())
             .text((d: Timestamp, i: number, nodes: any[]) =>
               // eslint-disable-next-line implicit-arrow-linebreak
-              dateHelper.format(d, format!, nodes[i]))
+              dateHelper.format(d, format!, nodes[i]),
+            )
             .call((selection: any) => this.#domainRotate(selection));
         },
       );

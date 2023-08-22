@@ -3,7 +3,7 @@ import { createPopper } from '@popperjs/core';
 import type dayjs from 'dayjs';
 import type { VirtualElement, StrictModifiers } from '@popperjs/core';
 import type CalHeatmap from '../CalHeatmap';
-import type { IPlugin, PluginOptions, Timestamp } from '../index';
+import type { IPlugin, PluginOptions, Timestamp } from '../types';
 
 const DEFAULT_SELECTOR = '#ch-tooltip';
 
@@ -150,9 +150,9 @@ export default class Tooltip implements IPlugin {
 
   #show(e: any, timestamp: Timestamp, value: number): void {
     const formatter = this.options.text;
-    const title = formatter ?
-      formatter(timestamp, value, this.calendar.dateHelper.date(timestamp)) :
-      null;
+    const title = formatter
+      ? formatter(timestamp, value, this.calendar.dateHelper.date(timestamp))
+      : null;
 
     if (!title) {
       return;

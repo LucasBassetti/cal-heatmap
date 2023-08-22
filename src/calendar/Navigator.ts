@@ -2,7 +2,7 @@ import { ScrollDirection } from '../constant';
 
 import type CalHeatmap from '../CalHeatmap';
 import type DomainCollection from './DomainCollection';
-import type { Timestamp } from '../index';
+import type { Timestamp } from '../types';
 
 export default class Navigator {
   calendar: CalHeatmap;
@@ -23,12 +23,12 @@ export default class Navigator {
   ): ScrollDirection {
     const { options } = this.calendar.options;
     const templatesClt = this.calendar.templateCollection;
-    const minDate = options.date.min ?
-      templatesClt.get(options.domain.type)!.extractUnit(+options.date.min) :
-      undefined;
-    const maxDate = options.date.max ?
-      templatesClt.get(options.domain.type)!.extractUnit(+options.date.max) :
-      undefined;
+    const minDate = options.date.min
+      ? templatesClt.get(options.domain.type)!.extractUnit(+options.date.min)
+      : undefined;
+    const maxDate = options.date.max
+      ? templatesClt.get(options.domain.type)!.extractUnit(+options.date.max)
+      : undefined;
     const { domainCollection } = this.calendar;
 
     if (
@@ -97,9 +97,9 @@ export default class Navigator {
     if (reset) {
       return this.loadNewDomains(
         this.calendar.createDomainCollection(date, options.options.range),
-        minDate < date ?
-          ScrollDirection.SCROLL_FORWARD :
-          ScrollDirection.SCROLL_BACKWARD,
+        minDate < date
+          ? ScrollDirection.SCROLL_FORWARD
+          : ScrollDirection.SCROLL_BACKWARD,
       );
     }
 

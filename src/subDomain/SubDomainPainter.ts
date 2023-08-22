@@ -1,6 +1,6 @@
 import { Position } from '../constant';
 import type CalHeatmap from '../CalHeatmap';
-import type { Timestamp, SubDomain } from '../index';
+import type { Timestamp, SubDomain } from '../types';
 
 export const DEFAULT_SELECTOR = '.ch-subdomain';
 const HIGHLIGHT_CLASSNAME = 'highlight';
@@ -26,10 +26,11 @@ export default class SubDomainPainter {
         (d: Timestamp) => d,
       )
       .join(
-        (enter: any) => enter
-          .append('svg')
-          .call((selection: any) => this.#setPositions(selection))
-          .attr('class', containerClassname.slice(1)),
+        (enter: any) =>
+          enter
+            .append('svg')
+            .call((selection: any) => this.#setPositions(selection))
+            .attr('class', containerClassname.slice(1)),
 
         (update: any) =>
           // eslint-disable-next-line implicit-arrow-linebreak
@@ -37,9 +38,7 @@ export default class SubDomainPainter {
       );
 
     const {
-      subDomain: {
-        radius, width, height, sort,
-      },
+      subDomain: { radius, width, height, sort },
     } = this.calendar.options.options;
     const evt = this.calendar.eventEmitter;
 
@@ -60,40 +59,49 @@ export default class SubDomainPainter {
         return subDomainsCollection;
       })
       .join(
-        (enter: any) => enter
-          .append('g')
-          .call((selection: any) => selection
-            .insert('rect')
+        (enter: any) =>
+          enter
+            .append('g')
+            .call((selection: any) =>
+              selection
+                .insert('rect')
+                .attr('class', (d: SubDomain) =>
+                  // eslint-disable-next-line implicit-arrow-linebreak
+                  this.#classname(d.t, `${DEFAULT_SELECTOR.slice(1)}-bg`),
+                )
+                .attr('width', width)
+                .attr('height', height)
+                .attr('x', (d: SubDomain) => this.#getX(d))
+                .attr('y', (d: SubDomain) => this.#getY(d))
+                .on('click', (ev: PointerEvent, d: SubDomain) =>
+                  // eslint-disable-next-line implicit-arrow-linebreak
+                  evt.emit('click', ev, d.t, d.v),
+                )
+                .on('mouseover', (ev: PointerEvent, d: SubDomain) =>
+                  // eslint-disable-next-line implicit-arrow-linebreak
+                  evt.emit('mouseover', ev, d.t, d.v),
+                )
+                .on('mouseout', (ev: PointerEvent, d: SubDomain) =>
+                  // eslint-disable-next-line implicit-arrow-linebreak
+                  evt.emit('mouseout', ev, d.t, d.v),
+                )
+                .attr('rx', radius > 0 ? radius : null)
+                .attr('ry', radius > 0 ? radius : null),
+            )
+            .call((selection: any) => this.#appendText(selection)),
+        (update: any) =>
+          update
+            .selectAll('rect')
             .attr('class', (d: SubDomain) =>
-            // eslint-disable-next-line implicit-arrow-linebreak
-              this.#classname(d.t, `${DEFAULT_SELECTOR.slice(1)}-bg`))
+              // eslint-disable-next-line implicit-arrow-linebreak
+              this.#classname(d.t, `${DEFAULT_SELECTOR.slice(1)}-bg`),
+            )
             .attr('width', width)
             .attr('height', height)
             .attr('x', (d: SubDomain) => this.#getX(d))
             .attr('y', (d: SubDomain) => this.#getY(d))
-            .on('click', (ev: PointerEvent, d: SubDomain) =>
-            // eslint-disable-next-line implicit-arrow-linebreak
-              evt.emit('click', ev, d.t, d.v))
-            .on('mouseover', (ev: PointerEvent, d: SubDomain) =>
-            // eslint-disable-next-line implicit-arrow-linebreak
-              evt.emit('mouseover', ev, d.t, d.v))
-            .on('mouseout', (ev: PointerEvent, d: SubDomain) =>
-            // eslint-disable-next-line implicit-arrow-linebreak
-              evt.emit('mouseout', ev, d.t, d.v))
-            .attr('rx', radius > 0 ? radius : null)
-            .attr('ry', radius > 0 ? radius : null))
-          .call((selection: any) => this.#appendText(selection)),
-        (update: any) => update
-          .selectAll('rect')
-          .attr('class', (d: SubDomain) =>
-          // eslint-disable-next-line implicit-arrow-linebreak
-            this.#classname(d.t, `${DEFAULT_SELECTOR.slice(1)}-bg`))
-          .attr('width', width)
-          .attr('height', height)
-          .attr('x', (d: SubDomain) => this.#getX(d))
-          .attr('y', (d: SubDomain) => this.#getY(d))
-          .attr('rx', radius)
-          .attr('ry', radius),
+            .attr('rx', radius)
+            .attr('ry', radius),
       );
   }
 
@@ -162,14 +170,16 @@ export default class SubDomainPainter {
       .append('text')
       .attr('class', (d: SubDomain) =>
         // eslint-disable-next-line implicit-arrow-linebreak
-        this.#classname(d.t, `${DEFAULT_SELECTOR.slice(1)}-text`))
+        this.#classname(d.t, `${DEFAULT_SELECTOR.slice(1)}-text`),
+      )
       .attr('x', (d: SubDomain) => this.#getX(d) + width / 2)
       .attr('y', (d: SubDomain) => this.#getY(d) + height / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
       .text((d: SubDomain, i: number, nodes: any[]) =>
         // eslint-disable-next-line implicit-arrow-linebreak
-        this.calendar.dateHelper.format(d.t, label, d.v, nodes[i]));
+        this.calendar.dateHelper.format(d.t, label, d.v, nodes[i]),
+      );
   }
 
   #getCoordinates(axis: 'x' | 'y', d: SubDomain): number {
